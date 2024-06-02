@@ -7,11 +7,15 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        while True:
-            if root.val < p.val and root.val < q.val:
-                root = root.right
-            elif root.val > p.val and root.val > q.val:
-                root = root.left
-            else:
-                return root
+        """
+        it's a Bst, so if it's a number in between when we traverse, then it must be that one
+        """
+        if root == None:
+            return None
+        elif root.val > p.val and root.val > q.val:
+            return self.lowestCommonAncestor(root.left, p , q)
+        elif root.val < p.val and root.val < q.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        else:
+            return root
         
