@@ -7,22 +7,22 @@
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         """
-        bascially level order but we only focus on right side and append that to res
+        not always guranteed we will use the right msot so we should do level order and append what's at the end
         """
-        res = []
-        queue = []
+        res, q = [], []
+
         if root:
-            queue.append(root)
+            q.append(root)
 
-        while queue:
-            val = []
-
-            for i in range(len(queue)):
-                node = queue.pop(0)
-                val.append(node.val)
-                if node.left != None:
-                    queue.append(node.left)
-                if node.right != None:
-                    queue.append(node.right)
-            res.append(val[-1])
+        while q:
+            level = []
+            len_q = len(q)
+            for i in range(len_q):
+                node = q.pop(0)
+                level.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+            res.append(level[-1])
         return res
