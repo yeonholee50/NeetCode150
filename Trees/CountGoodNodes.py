@@ -7,24 +7,31 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         """
-        we could consturct a list from root to there. if it's greatter of equal, then we pass back length and current arr
-        if it's less that, we skip
-        made big improvements from the max method because max is O(n) while if we just care about greater than or equal to and append to the
-        end of the lsit, that's the only comparison we have to make. runtime is now 70%
+        We can construct a list where there is valid node. 
         """
         counter = 0
-        def post_order_traverse(root , root_list):
-            nonlocal counter
-            if root == None:
-                return
-            if len(root_list) == 0 or root.val >= root_list[-1]:
-                counter+=1
-                post_order_traverse(root.left, root_list + [root.val]) 
-                post_order_traverse(root.right, root_list + [root.val])
-            else:
-                post_order_traverse(root.left, root_list) 
-                post_order_traverse(root.right, root_list)
-            
 
-        post_order_traverse(root, [])
+        def dfs(node, arr):
+            nonlocal counter
+            if node == None:
+                return
+            else:
+                if len(arr) == 0:
+                    counter+=1
+                    dfs(node.left, arr + [node.val])
+                    dfs(node.right, arr + [node.val])
+                else:
+                    """
+                    arr is not empty
+                    """
+                    if node.val >= arr[-1]:
+                        counter+=1
+                        dfs(node.left, arr + [node.val])
+                        dfs(node.right, arr + [node.val])
+                    else:
+                        dfs(node.left, arr)
+                        dfs(node.right, arr)
+
+
+        dfs(root, [])
         return counter
