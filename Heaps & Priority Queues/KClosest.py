@@ -1,15 +1,12 @@
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
-        """
-        simple question, just a tuple with euclid dist and points 
-        and a simple heapq call
-        """
-        dist = []
-        for point in points:
+        def euclid_distance_from_origin(point):
             x, y = point
-            heapq.heappush(dist, (math.sqrt((x * x) + (y * y)), point))
+            return math.sqrt(x*x + y*y)
+        q = []
+        for point in points:
+            heapq.heappush(q, (euclid_distance_from_origin(point), point))
         res = []
         for i in range(k):
-            _, point = heapq.heappop(dist)
-            res.append(point)
+            res.append(heapq.heappop(q)[-1])
         return res
