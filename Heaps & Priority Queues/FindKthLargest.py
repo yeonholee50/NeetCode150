@@ -7,5 +7,5 @@ class Solution:
         heapq.heapify(ls)
         res = None
         for i in range(k):
-            res = -heapq.heappop(ls)
-        return res
+            res = heapq.heappop(ls)
+        return -res
