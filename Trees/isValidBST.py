@@ -7,23 +7,29 @@
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         """
-        Simplest solution is to construct a list an ensure that the left is always bigger than right subtree. or we can get a max min from each construction 
-        of arr passed back. But that'll take too long
+        best idea is to ensure that the left subtree is always less than root. right subtree is always bigger than root. 
+        we can construct a list using inorder and ensure that the list is inorder
         """
-        def inorder(node):
-            if node == None:
+        
+        def inorder(root):
+            if root == None:
                 return []
             else:
-                left_arr = inorder(node.left)
-                right_arr = inorder(node.right)
-                return left_arr + [node.val] + right_arr
+                left_sub = inorder(root.left)
+                right_sub = inorder(root.right)
+                return left_sub + [root.val] + right_sub
         arr = inorder(root)
-        if len(arr) == 1:
+
+        if len(arr) <= 1:
             return True
         else:
             i = 0
             j = 1
-            while j < len(arr) and arr[j] > arr[i]:
+            while j < len(arr):
+                if arr[i] >= arr[j]:
+                    return False
                 i+=1
                 j+=1
-            return j == len(arr)
+            return True
+
+        
