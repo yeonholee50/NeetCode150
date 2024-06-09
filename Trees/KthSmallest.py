@@ -13,11 +13,18 @@ class Solution:
         res = []
 
         def dfs(root):
-            if root == None or len(res) == k:
+            nonlocal res
+            if root == None:
+                return
+            elif len(res) >= k:
                 return
             else:
                 dfs(root.left)
-                res.append(root.val)
+                if len(res) >= k:
+                    return 
+                res = res + [root.val]
+                if len(res) >= k:
+                    return
                 dfs(root.right)
         dfs(root)
-        return res[k-1]
+        return res[-1] if len(res) < k else res[k-1]
