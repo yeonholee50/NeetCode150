@@ -33,5 +33,6 @@ class Solution:
                         dfs(node.right, arr)
 
 
+
         dfs(root, [])
         return counter
