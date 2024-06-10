@@ -5,7 +5,7 @@ class Solution:
             hm[i] = []
         for i in range(len(prerequisites)):
             prerequisite = prerequisites[i]
-            for j in range(len(prerequisite)):
+            for j in  range(len(prerequisite)):
                 hm[prerequisite[-1]].append(prerequisite[0])
         visited = set()
         
