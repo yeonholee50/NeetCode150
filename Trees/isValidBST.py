@@ -11,16 +11,14 @@ class Solution:
         we can construct a list using inorder and ensure that the list is inorder
         """
         
-        def inorder(root):
-            if root == None:
+        def inorder(node):
+            if node == None:
                 return []
             else:
-                left_sub = inorder(root.left)
-                right_sub = inorder(root.right)
-                return left_sub + [root.val] + right_sub
+                return inorder(node.left) + [node.val] + inorder(node.right)
         arr = inorder(root)
 
-        if len(arr) <= 1:
+        if len(arr) == 1:
             return True
         else:
             i = 0
