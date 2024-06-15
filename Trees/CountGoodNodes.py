@@ -7,32 +7,27 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         """
-        We can construct a list where there is valid node. 
+        Let's construct a list. We append node to list if it's a good node
         """
-        counter = 0
+        count = 0
 
         def dfs(node, arr):
-            nonlocal counter
+            nonlocal count
             if node == None:
                 return
+            elif len(arr) == 0:
+                count+=1    
+                dfs(node.left, arr + [node.val])
+                dfs(node.right, arr + [node.val])
             else:
-                if len(arr) == 0:
-                    counter+=1
+                if node.val >= arr[-1]:
+                    count+=1
                     dfs(node.left, arr + [node.val])
                     dfs(node.right, arr + [node.val])
                 else:
-                    """
-                    arr is not empty
-                    """
-                    if node.val >= arr[-1]:
-                        counter+=1
-                        dfs(node.left, arr + [node.val])
-                        dfs(node.right, arr + [node.val])
-                    else:
-                        dfs(node.left, arr)
-                        dfs(node.right, arr)
-
-
+                    dfs(node.left, arr)
+                    dfs(node.right, arr)
+            
 
         dfs(root, [])
-        return counter
+        return count
