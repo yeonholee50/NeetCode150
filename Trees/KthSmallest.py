@@ -7,24 +7,23 @@
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         """
-        we can do a dfs and stop when lsit is at k capacity since it's a bst
-        we construct an inorder until list is at capacity
+        we can do an inorder traversal.
+        but an early exit inorder traversal
         """
-        res = []
 
-        def dfs(root):
-            nonlocal res
-            if root == None:
-                return
-            elif len(res) >= k:
-                return
+        def inorder(node):
+            if node == None:
+                return []
             else:
-                dfs(root.left)
-                if len(res) >= k:
-                    return 
-                res = res + [root.val]
-                if len(res) >= k:
-                    return
-                dfs(root.right)
-        dfs(root)
-        return res[-1] if len(res) < k else res[k-1]
+                left_arr = inorder(node.left) + [node.val]
+                if len(left_arr) >= k:
+                    return left_arr
+                else:
+                    return left_arr + inorder(node.right)
+
+
+        arr = inorder(root)
+        if len(arr) <= k:
+            return arr[-1]
+        else:
+            return arr[k - 1]
