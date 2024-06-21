@@ -1,65 +1,55 @@
 class Twitter:
 
     def __init__(self):
-        self.follower = {}
-        self.posts = {}
+        self.post = {}        
+        self.following = {}
         self.time = 0
-        """
-        follow will be follower id as key and list of followee id including themselves as list as the value
-        posts will be user id as key and list of posts under user id as list as the value
-        time will be decremented for each function call so that the most negative is least and that translates to most recent
-        """
 
     def postTweet(self, userId: int, tweetId: int) -> None:
         self.time-=1
-        if userId not in self.follower.keys():
-            self.follower[userId] = [userId]
-        if userId not in self.posts.keys():
-            self.posts[userId] = [(self.time, tweetId)]
+        if userId not in self.following.keys():
+            self.following[userId] = [userId]
+        if userId not in self.post.keys():
+            self.post[userId] = [(self.time, tweetId)]
         else:
-            self.posts[userId].append((self.time, tweetId))
-        
-        
+            self.post[userId].append((self.time, tweetId))
+
 
     def getNewsFeed(self, userId: int) -> List[int]:
         self.time-=1
-        arr = []
-        if userId not in self.follower.keys():
-            if userId not in self.posts.keys():
-                return []
-            else:
-                arr = self.posts[userId]                    
+        """
+        users are guranteed to follow themselves so we can just get a follow list and append to posts
+        """
+        follows = []
+        posts = []
+        if userId in self.following.keys():
+            follows = self.following[userId]
+            for followId in follows:
+                if followId in self.post.keys():
+                    posts = posts + self.post[followId]
+            heapq.heapify(posts)
+            counter = 0
+            res = []
+            while posts and counter < 10:
+                res.append(heapq.heappop(posts)[-1])
+                counter+=1
+            return res
+
         else:
-            """
-            The user does follow someone
-            """
-            for followId in self.follower[userId]:
-                if followId in self.posts.keys():
-                    arr = arr + self.posts[followId]
-        heapq.heapify(arr)
-        res, count = [], 0
-        while len(arr) != 0 and count != 10:
-            res.append(heapq.heappop(arr)[-1])
-            count+=1
-        return res
+            return []
+        
+
 
     def follow(self, followerId: int, followeeId: int) -> None:
         self.time-=1
-        if followerId in self.follower.keys() and followeeId not in self.follower[followerId]:
-            self.follower[followerId].append(followeeId)
-        elif followerId not in self.follower.keys():
-            self.follower[followerId] = [followerId, followeeId]
+        if followerId not in self.following.keys():
+            self.following[followerId] = [followerId, followeeId]
+        elif followeeId not in self.following[followerId]:
+            self.following[followerId].append(followeeId)
 
     def unfollow(self, followerId: int, followeeId: int) -> None:
-        
         self.time-=1
-        if followerId in self.follower.keys() and followeeId in self.follower[followerId]:
-            self.follower[followerId].remove(followeeId)
-
-
-# Your Twitter object will be instantiated and called as such:
-# obj = Twitter()
-# obj.postTweet(userId,tweetId)
-# param_2 = obj.getNewsFeed(userId)
-# obj.follow(followerId,followeeId)
-# obj.unfollow(followerId,followeeId)
+        if followerId in self.following.keys() and followeeId in self.following[followerId]:
+            followers = self.following[followerId]
+            followers.remove(followeeId)
+            self.following[followerId] = followers
