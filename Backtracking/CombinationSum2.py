@@ -1,23 +1,23 @@
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
-        res = []
         candidates.sort()
-
-        def backtrack(curr, position, target):
-            if target == 0:
-                res.append(curr.copy())
+        """
+        we can reduce num of recursion by sorting so that i+1 will be greater than previous
+        """
+        res = []
+        def dfs(combination, i, summation):
+            if summation == target:
+                res.append(combination.copy())
                 return
-            elif target <= 0:
+            if summation > target or i >= len(candidates):
                 return
-            previous = None
-            for i in range(position, len(candidates)):
-                if previous == candidates[i]:
+            prev = -1
+            for j in range(i, len(candidates)):
+                if candidates[j] == prev:
                     continue
-                else:
-                    curr.append(candidates[i])
-                    backtrack(curr, i + 1, target - candidates[i])
-                    curr.pop()
-                    previous = candidates[i]
-        
-        backtrack([], 0, target)
+                combination.append(candidates[j])
+                dfs(combination, j + 1, summation + candidates[j])
+                combination.pop()
+                prev = candidates[j]
+        dfs([], 0, 0)
         return res
