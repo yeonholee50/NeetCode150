@@ -1,22 +1,22 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        if not grid or not grid[0]:
-            return 0
-        visit = set()
-        islands = 0
-        rows, cols = len(grid), len(grid[0])
+        num = 0
+
+        island_locations = set()
+        
 
         def dfs(i, j):
-            if i not in range(rows) or j not in range(cols) or grid and grid[i][j] == "0" or (i, j) in visit:
+            if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or (i, j) in island_locations or grid[i][j] == "0":
                 return
             else:
-                visit.add((i, j))
-                directions = [[-1,0], [1, 0], [0, -1], [0, 1]]
-                for direction in directions:
-                    dfs(direction[0] + i, direction[1] + j)
+                island_locations.add((i, j))            
+                dfs(i + 1, j)
+                dfs(i - 1, j)
+                dfs(i, j + 1)
+                dfs(i, j - 1)
         for i in range(len(grid)):
             for j in range(len(grid[0])):
-                if grid[i][j] == "1" and (i, j) not in visit:
+                if grid[i][j] == "1" and (i, j) not in island_locations:
+                    num+=1
                     dfs(i, j)
-                    islands+=1
-        return islands
+        return num
