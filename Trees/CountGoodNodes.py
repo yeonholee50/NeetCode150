@@ -7,27 +7,19 @@
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         """
-        Let's construct a list. We append node to list if it's a good node
+        if greater or equal to predacessor, add to the list and increment counter
         """
         count = 0
-
-        def dfs(node, arr):
+        def dfs(root, predecessor):
             nonlocal count
-            if node == None:
+            if root == None:
                 return
-            elif len(arr) == 0:
-                count+=1    
-                dfs(node.left, arr + [node.val])
-                dfs(node.right, arr + [node.val])
-            else:
-                if node.val >= arr[-1]:
-                    count+=1
-                    dfs(node.left, arr + [node.val])
-                    dfs(node.right, arr + [node.val])
-                else:
-                    dfs(node.left, arr)
-                    dfs(node.right, arr)
             
-
-        dfs(root, [])
+            if predecessor <= root.val:
+                count+=1
+            predecessor = max(root.val, predecessor)
+            dfs(root.left, predecessor)
+            dfs(root.right, predecessor)
+                
+        dfs(root, -float('inf'))
         return count
