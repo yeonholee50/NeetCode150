@@ -7,23 +7,22 @@
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         """
-        we can do an inorder traversal.
-        but an early exit inorder traversal
+        we can do an inorder and when the arr is k filled, then we can return
         """
+        arr = []
 
-        def inorder(node):
-            if node == None:
-                return []
+        def inorder(root):
+            if root == None:
+                return
+            if len(arr) == k:
+                return
             else:
-                left_arr = inorder(node.left) + [node.val]
-                if len(left_arr) >= k:
-                    return left_arr
-                else:
-                    return left_arr + inorder(node.right)
-
-
-        arr = inorder(root)
-        if len(arr) <= k:
-            return arr[-1]
-        else:
-            return arr[k - 1]
+                inorder(root.left)
+                if len(arr) == k:
+                    return
+                arr.append(root.val)
+                if len(arr) == k:
+                    return
+                inorder(root.right)
+        inorder(root)
+        return arr[k - 1] if len(arr) >= k else arr[-1]
