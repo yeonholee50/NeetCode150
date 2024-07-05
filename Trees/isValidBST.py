@@ -7,22 +7,21 @@
 class Solution:
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         """
-        best idea is to ensure that the left subtree is always less than root. right subtree is always bigger than root. 
-        we can construct a list using inorder and ensure that the list is inorder
+        we can run inorder algo and then go through list
         """
-        
-        def inorder(node):
-            if node == None:
-                return []
+        arr = []
+        def inorder(root):
+            if root == None:
+                return 
             else:
-                return inorder(node.left) + [node.val] + inorder(node.right)
-        arr = inorder(root)
-
-        if len(arr) == 1:
+                inorder(root.left)
+                arr.append(root.val)
+                inorder(root.right)
+        inorder(root)
+        if len(arr) < 2:
             return True
         else:
-            i = 0
-            j = 1
+            i, j = 0, 1
             while j < len(arr):
                 if arr[i] >= arr[j]:
                     return False
