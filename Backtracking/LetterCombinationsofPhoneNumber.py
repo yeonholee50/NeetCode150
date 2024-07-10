@@ -1,7 +1,7 @@
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         res = []
-        str_to_char = {
+        digits_to_char = {
             "1": None,
             "2": "abc",
             "3": "def",
@@ -10,18 +10,16 @@ class Solution:
             "6": "mno",
             "7": "pqrs",
             "8": "tuv",
-            "9": "wxyz",
-            "0": "_",
+            "9": "wxyz"
         }
-        def backtrack(i, currStr):
-            if len(currStr) == len(digits):
-                res.append(currStr)
+
+        def dfs(i, current):
+            if len(current) == len(digits):
+                res.append(current)
                 return
             else:
-                for c in str_to_char[digits[i]]:
-                    backtrack(i + 1, currStr + c)
-                    
-
+                for c in digits_to_char[digits[i]]:
+                    dfs(i + 1, current + c)
         if digits:
-            backtrack(0, "")
+            dfs(0, "")
         return res
