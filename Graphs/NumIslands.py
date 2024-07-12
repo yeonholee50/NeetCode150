@@ -1,22 +1,23 @@
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
-        num = 0
-
-        island_locations = set()
-        
-
+        ROWS = len(grid)
+        COLS = len(grid[0])
+        nums = 0
+        land = set()
         def dfs(i, j):
-            if i < 0 or j < 0 or i >= len(grid) or j >= len(grid[0]) or (i, j) in island_locations or grid[i][j] == "0":
+            if min(i, j) < 0 or i >= ROWS or j >= COLS or grid[i][j] == "0" or (i, j) in land:
                 return
             else:
-                island_locations.add((i, j))            
+                land.add((i, j))
                 dfs(i + 1, j)
                 dfs(i - 1, j)
                 dfs(i, j + 1)
                 dfs(i, j - 1)
+
+
         for i in range(len(grid)):
             for j in range(len(grid[0])):
-                if grid[i][j] == "1" and (i, j) not in island_locations:
-                    num+=1
+                if grid[i][j] == "1" and (i, j) not in land:
+                    nums+=1
                     dfs(i, j)
-        return num
+        return nums
