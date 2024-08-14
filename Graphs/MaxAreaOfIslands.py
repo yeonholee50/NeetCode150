@@ -18,7 +18,6 @@ class Solution:
                 dfs(i + 1, j)
                 dfs(i - 1, j)
 
-
         for i in range(len(grid)):
             for j in range(len(grid[0])):
                 if grid[i][j] == 1 and (i, j) not in land_set:
