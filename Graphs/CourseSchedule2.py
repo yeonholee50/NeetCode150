@@ -18,7 +18,7 @@ class Solution:
                 if dfs(pre) == False:
                     return False
             cycle.remove(crs)
-            visit.add(crs)
+            visit.add(crs) 
             output.append(crs)
             return True
 

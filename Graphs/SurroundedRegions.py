@@ -18,9 +18,9 @@ class Solution:
                 dfs(i, j - 1)
 
         for i in range(len(board)):
-            for j in range(len(board[i])):
+            for j in range(len(  [i])):
                 if board[i][j] == "O" and (i == 0 or j == 0 or i == ROWS - 1 or j == COLS - 1):
-                    dfs(i, j)
+                    dfs(i, j) 
         for i in range(len(board)):
             for j in range(len(board[i])):
                 if board[i][j] == "O":
@@ -28,5 +28,5 @@ class Solution:
         
         for i in range(len(board)):
             for j in range(len(board[i])):
-                if board[i][j] == "T":
-                    board[i][j] = "O"
+                if board[i][j] =="T":
+                    board[i][j] = "O"  

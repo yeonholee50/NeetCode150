@@ -11,7 +11,7 @@ class Node:
 class Solution:
     def copyRandomList(self, head: "Node") -> "Node":
         hm = {}
-        hm[None] = None
+        hm[None] = None 
         curr = head
         while curr:
             copy = Node(curr.val)
