@@ -6,19 +6,19 @@
 
 class Solution:
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        """
-        can use tortoise hare algorithm
-        """
-        if head == None:
+        if head is None or head.next is None:
             return False
-        h = head
-        t = head.next
-        while t:
+        t = head
+        h = head.next
+
+        while h is not None:
+            t = t.next
+            h = h.next
+            if h is None:
+                return False
+            h = h.next
+            if h is None:
+                return False
             if h == t:
                 return True
-            h = h.next
-            t = t.next
-            if t == None:
-                return False
-            t = t.next
         return False
