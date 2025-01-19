@@ -6,21 +6,16 @@
 #         self.right = right
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        if p == None and q == None:
+        if p is None and q is not None:
+            return False
+        elif p is not None and q is None:
+            return False
+        elif p is None and q is None:
             return True
-        elif p == None and q != None:
-            return False
-        elif p != None and q == None:
-            return False
         else:
-            """
-            reason to go preorder is for efficiency. if val is not same in upper recursion, there is no reason to 
-            go down the entire tree
-            """
-            if p.val != q.val:
+            if self.isSameTree(p.left, q.left) is False:
                 return False
-            left_bool = self.isSameTree(p.left, q.left)
-            if left_bool == False:
+            elif self.isSameTree(p.right, q.right) is False:
                 return False
             else:
-                return self.isSameTree(p.right, q.right)
+                return p.val == q.val

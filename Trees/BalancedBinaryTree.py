@@ -6,25 +6,23 @@
 #         self.right = right
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
-        """
-        basically test if it's an avl
-        """
-        return self.avl_traversal(root)[-1]
-    
-    """
-    given node, we should return the node itself, the depth for upper recursive calculation, and a bool value saying that call is height balanced
-    """
-    def avl_traversal(self, root):
-        if root == None:
-            return root, 0, True
+        if root is None:
+            return True
         else:
-            root.left, left_depth, left_bool = self.avl_traversal(root.left)
+            return self.avl_traversal(root)[0]
+
+
+    def avl_traversal(self, root: Optional[TreeNode]):
+        if root is None:
+            return True, 0
+        else:
+            left_bool, left_depth = self.avl_traversal(root.left)
             if left_bool == False:
-                return root, left_depth, False
-            root.right, right_depth, right_bool = self.avl_traversal(root.right)
+                return False, 0
+            right_bool, right_depth = self.avl_traversal(root.right)
             if right_bool == False:
-                return root, right_depth, False
+                return False, 0
             if abs(right_depth - left_depth) > 1:
-                return root, 0, False
+                return False, 0
             else:
-                return root, max(left_depth, right_depth) + 1, True
+                return True, max(right_depth, left_depth) + 1
