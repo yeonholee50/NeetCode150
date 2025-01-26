@@ -1,17 +1,20 @@
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        elements_freq = {}
+        hm = {}
         for num in nums:
-            if num not in elements_freq.keys():
-                elements_freq[num] = -1
+            if num in hm.keys():
+                hm[num]+=1
             else:
-                elements_freq[num]-=1
-        keys = elements_freq.keys()
-        heap = []
-        for key in keys:
-            heapq.heappush(heap, (elements_freq[key], key))
-        res = []
-        while k != 0:
-            res.append(heapq.heappop(heap)[-1])
-            k-=1
-        return res
+                hm[num] = 1
+
+        q = []
+        for num in hm.keys():
+            heapq.heappush(q, (-hm[num], num))
+        
+        if len(q) <= k:
+            return list(hm.keys())
+        else:
+            res = []
+            for _ in range(k):
+                res.append(heapq.heappop(q)[-1])
+            return res 
