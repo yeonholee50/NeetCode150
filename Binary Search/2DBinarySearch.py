@@ -1,8 +1,12 @@
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
-        arr = None
-        if matrix[0][-1] >= target:
-            arr = matrix[0]
+        row = None
+        if target <= matrix[0][-1]:
+            """
+            search first row
+            """
+            row = matrix[0]
+
         else:
             i = 1
             while i < len(matrix) and matrix[i][-1] < target:
@@ -11,14 +15,20 @@ class Solution:
                 i = len(matrix) - 1
             while i > 0 and matrix[i][0] > target:
                 i-=1
-            arr = matrix[i]
-        if arr[0] == target:
-            return True
+            if i <= 0:
+                return False
+            row = matrix[i]
+            print(row)
+        if row[0] >= target:
+            return True if target == row[0] else False
         i = 1
-        while i < len(arr) and arr[i] < target:
+        while i < len(row) and row[i] < target:
             i*=2
-        if i >= len(arr):
-            i = len(arr) - 1
-        while i > 0 and arr[i] > target:
+        if i >= len(row):
+            i = len(row) - 1
+        while i > 0 and row[i] > target:
             i-=1
-        return arr[i] == target
+        if i <= 0:
+            return False
+        else:
+            return row[i] == target

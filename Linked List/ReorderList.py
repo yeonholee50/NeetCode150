@@ -8,26 +8,24 @@ class Solution:
         """
         Do not return anything, modify head in-place instead.
         """
-        curr = head
         q = []
+        curr = head
         while curr:
-            copy = curr
+            q.append(curr)
+            prev = curr
             curr = curr.next
-            copy.next = None
-            q.append(copy)
+            prev.next = None
+        curr = None
         first = True
         while q:
-            if first == True:
+            if curr is None:
                 first = False
-                node = q.pop(0)
-                if q:
-                    node.next = q[-1]
-                else:
-                    return
+                curr = q.pop(0)
+            elif first is True:
+                first = False
+                curr.next = q.pop(0)
+                curr = curr.next
             else:
                 first = True
-                node = q.pop(-1)
-                if q:
-                    node.next = q[0]
-                else:
-                    return
+                curr.next = q.pop(-1)
+                curr = curr.next
