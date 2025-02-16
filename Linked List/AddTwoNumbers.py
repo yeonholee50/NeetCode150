@@ -5,62 +5,34 @@
 #         self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        if l1 is None:
+            return l2
+        if l2 is None:
+            return l1
         
-        curr1 = l1
-        curr2 = l2
+        head, curr = None, None
+        curr1, curr2 = l1, l2
         carry = 0
-        res = None
-        if curr1.val + curr2.val >= 10:
-            carry = 1
-            res = ListNode((curr1.val + curr2.val)%10, None)
-        else:
-            res = ListNode(curr1.val + curr2.val, None)
-        head = res
-        curr1 = curr1.next
-        curr2 = curr2.next
         while curr1 and curr2:
-            next_res = ListNode()
-            if curr1.val + curr2.val + carry >= 10:
-                next_res.val = (curr1.val + curr2.val + carry)%10
-                carry = 1
-            else:
-                next_res.val = curr1.val + curr2.val + carry
-                carry = 0
-            res.next = next_res
-            res = res.next
-            curr1 = curr1.next
-            curr2 = curr2.next
-        if not curr1 and not curr2 and carry:
-            res.next = ListNode(carry, None)
-            return head
-        while curr1:
-            next_res = ListNode()
-            if curr1.val + carry >= 10:
-                next_res.val = (curr1.val + carry)%10
-                carry = 1
-            else:
-                next_res.val = curr1.val + carry
-                carry = 0
-            res.next = next_res
-            res = res.next
-            curr1 = curr1.next
-            if carry == 0:
-                res.next = curr1
-            elif curr1 == None and carry == 1:
-                res.next = ListNode(carry, None)
-        while curr2:
-            next_res = ListNode()
-            if curr2.val + carry >= 10:
-                next_res.val = (curr2.val + carry)%10
-                carry = 1
-            else:
-                next_res.val = curr2.val + carry
-                carry = 0
-            res.next = next_res
-            res = res.next
-            curr2 = curr2.next
-            if carry == 0:
-                res.next = curr2
-            elif curr2 == None and carry == 1:
-                res.next = ListNode(carry, None)
+            
+            if head is None and curr is None:
+                head = ListNode((curr1.val + curr2.val + carry)%10)
+                carry = (curr1.val + curr2.val + carry) // 10
+                curr = head
+                curr1 = curr1.next
+                curr2 = curr2.next
+            elif curr1 is not None and curr2 is not None:
+                curr.next = ListNode((curr1.val + curr2.val + carry)%10)
+                carry = (curr1.val + curr2.val + carry) // 10
+                curr1 = curr1.next
+                curr2 = curr2.next
+                curr = curr.next
+        l = curr1 if curr1 is not None else curr2
+        while l is not None:
+            curr.next = ListNode((l.val + carry) % 10)
+            carry = (l.val + carry) // 10
+            curr = curr.next
+            l = l.next
+        if carry:
+            curr.next = ListNode(carry)
         return head
