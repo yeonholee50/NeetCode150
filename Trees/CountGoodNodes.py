@@ -6,20 +6,19 @@
 #         self.right = right
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
-        """
-        if greater or equal to predacessor, add to the list and increment counter
-        """
         count = 0
-        def dfs(root, predecessor):
+
+        def pre_order(node, greatest):
             nonlocal count
-            if root == None:
+            if node is None:
                 return
-            
-            if predecessor <= root.val:
-                count+=1
-            predecessor = max(root.val, predecessor)
-            dfs(root.left, predecessor)
-            dfs(root.right, predecessor)
-                
-        dfs(root, -float('inf'))
+            else:
+                if node.val >= greatest:
+                    count+=1
+
+                greatest = max(greatest, node.val)
+
+                pre_order(node.left, greatest)
+                pre_order(node.right, greatest)
+        pre_order(root, root.val)
         return count

@@ -6,23 +6,24 @@
 #         self.right = right
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        """
-        not always guranteed we will use the right msot so we should do level order and append what's at the end
-        """
-        res, q = [], []
+        def levelOrder(root: Optional[TreeNode]) -> List[List[int]]:
+            res = []
+            if root is None:
+                return res
+            q = [[root, 0]]
 
-        if root:
-            q.append(root)
-
-        while q:
-            level = []
-            len_q = len(q)
-            for i in range(len_q):
-                node = q.pop(0)
-                level.append(node.val)
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-            res.append(level[-1])
-        return res
+            while q:
+                node, depth = q[0]
+                depth+=1
+                level = []
+                for i in range(len(q)):
+                    node, _ = q.pop(0)
+                    level.append(node.val)
+                    if node.left is not None:
+                        q.append([node.left, depth])
+                    if node.right is not None:
+                        q.append([node.right, depth])
+                res.append(level)
+            return res
+        ls = levelOrder(root)
+        return [ls[i][-1] for i in range(len(ls))]
