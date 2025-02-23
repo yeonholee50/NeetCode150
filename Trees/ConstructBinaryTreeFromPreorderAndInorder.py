@@ -9,9 +9,11 @@ class Solution:
         if not preorder and not inorder:
             return None
         else:
-            
+            """
+            just look at example for reference point
+            """
             root = TreeNode(preorder[0])
-            middle = inorder.index(preorder[0])
-            root.left = self.buildTree(preorder[1:middle+ 1], inorder[:middle])
-            root.right = self.buildTree(preorder[middle + 1:], inorder[middle + 1:])
+            mid = inorder.index(preorder[0])
+            root.left = self.buildTree(preorder[1: mid + 1], inorder[0: mid])
+            root.right = self.buildTree(preorder[mid + 1:], inorder[mid + 1:])
             return root
